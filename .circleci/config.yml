@@ -30,7 +30,7 @@ jobs:
         - run:
             name: build image and upload to docker hub
             command: |
-              echo img: $IMAGE_NAME
+              echo imgs: $IMAGE_NAME
               docker build --help
               docker build --tag=$IMAGE_NAME .
               echo "-------------------------------------build docker----------------------------"
