@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eks-deployment-udacity-capstone-udacity-capstone
+  name: eks-deployment-udacity-capstone
   namespace: eks-deployment-udacity-capstone
   labels:
     app: eks-deployment-udacity-capstone
