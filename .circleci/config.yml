@@ -81,12 +81,12 @@ jobs:
               docker pull $DOCKERHUB_USERNAME/$IMAGE_NAME
               echo "pull docker update config"
               # kubectl port-forward 8080:80
-              kubectl create namespace eks-deployment
+              kubectl create namespace eks-deployment-udacity-capstone
               kubectl apply -f eks-deployment.yaml
               kubectl apply -f eks-service.yaml
               echo "deploy eks to-cluster"
-              kubectl get all -n eks-deployment
-              kubectl -n eks-deployment describe service eks-deployment
+              kubectl get all -n eks-deployment-udacity-capstone
+              kubectl -n eks-deployment-udacity-capstone describe service eks-deployment-udacity-capstone
 
 workflows:
   default:
