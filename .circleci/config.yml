@@ -14,9 +14,9 @@ jobs:
             name: install Linter run lint to check Dockerfile
             command: |
               # make setup
-              python3 -m venv venv
-              . venv/bin/activate
-              make install
+              # python3 -m venv venv
+              # . venv/bin/activate
+              # make install
               make lint
 
     push-docker:
@@ -92,10 +92,10 @@ workflows:
   default:
     jobs:
       - check-code
-      - push-docker:
-          requires: [check-code]
-      - create-eks-cluster:
-          requires: [push-docker]
-      - deploy-eks-cluster:
-          requires: [create-eks-cluster]
+      # - push-docker:
+      #     requires: [check-code]
+      # - create-eks-cluster:
+      #     requires: [push-docker]
+      # - deploy-eks-cluster:
+      #     requires: [create-eks-cluster]
        
