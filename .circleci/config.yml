@@ -31,7 +31,6 @@ jobs:
             name: build image and upload to docker hub
             command: |
               echo imgs: $IMAGE_NAME
-              docker build --help
               docker build --tag=$IMAGE_NAME .
               echo "-------------------------------------build docker----------------------------"
               echo $IMAGE_NAME
@@ -49,6 +48,7 @@ jobs:
         - run:
             name: install EKS and create EKS cluster
             command: |
+              echo "-------------------------------------install EKS ----------------------------"
               apk add --update tar gzip  curl
               curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/v0.83.0/eksctl_Linux_amd64.tar.gz" | tar xz -C /tmp
               mv /tmp/eksctl /usr/local/bin
@@ -66,27 +66,27 @@ jobs:
         - run:
             name: install kubectl tool and deploy the cluster
             command: |
+              echo start install aws-cli
               sudo apt -y install tar gzip unzip curl
               sudo curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
               sudo unzip awscliv2.zip
               sudo ./aws/install
-              echo "----------------------------------------install-awscli-------------------------------------"
+              echo "install-awscli"
               curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
               sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
               kubectl version --client
-              echo "----------------------------------------install-kubectl-----------------------------------"
+              echo "install-kubectl"
               # deploy cluster
               aws eks update-kubeconfig --name EKSCluster-${CIRCLE_WORKFLOW_ID:0:7}
               docker pull $DOCKERHUB_USERNAME/$IMAGE_NAME
-              echo "-------------------------------------pull-docker-update-config----------------------------"
+              echo "pull-docker-update-config"
               # kubectl port-forward 8080:80
               kubectl create namespace eks-deployment
               kubectl apply -f eks-deployment.yaml
               kubectl apply -f eks-service.yaml
-              echo "---------------------------------------deploy-eks-to-cluster------------------------------"
+              echo "deploy-eks-to-cluster"
               kubectl get all -n eks-deployment
               kubectl -n eks-deployment describe service eks-deployment
-              echo "---------------------------------------------DONE-----------------------------------------"
 
 workflows:
   default:
@@ -94,8 +94,8 @@ workflows:
       - check-code
       - push-docker:
           requires: [check-code]
-      # - create-eks-cluster:
-      #     requires: [push-docker]
-      # - deploy-eks-cluster:
-      #     requires: [create-eks-cluster]
+      - create-eks-cluster:
+          requires: [push-docker]
+      - deploy-eks-cluster:
+          requires: [create-eks-cluster]
        
