@@ -6,7 +6,7 @@ Capstone project for Udacity Dev-Ops Nanodegree: develop a CI/CD pipeline for mi
 
 The CI CD pipeline is as follows for this project. For initial set up:
 
-- Set up jenkins
+- Set up CircleCI
 - Install dependencies for local development
 - Create AWS infrastructure
 
